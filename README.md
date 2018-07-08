@@ -1,4 +1,4 @@
-## Gistru
+## gistit
 
 > Commit various files gists from the command line.
 
@@ -15,11 +15,11 @@ Create Gist. Open URL https://gist.github.com/XXXXXXXXXXXXXXXXXXXXX
 ```
 
 ```sh
-gistru -h
+gistit -h
 
            Commit various files to gist
 
-           USAGE: gistru <opts>
+           USAGE: gistit <opts>
 
            Options:
            -h, --help        Dispay this message

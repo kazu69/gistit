@@ -1,0 +1,14 @@
+
+[package]
+name = "gistru"
+version = "0.0.1"
+authors = ["kazu69"]
+
+[dependencies]
+clap = "2.31.2"
+exitcode = "1.1.2"
+reqwest = "0.8.6"
+serde = "1.0.66"
+serde_derive = "1.0.66"
+serde_json = "1.0.21"
+git2 = "0.7"

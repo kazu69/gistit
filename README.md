@@ -25,4 +25,5 @@ gistit -h
            -f, --file        Gist commit file name
            -d, --description Gist description
            -p, --public      Gist public or secret
+           -n, --hostname    Gist hostname setting (default github.com)
 ```

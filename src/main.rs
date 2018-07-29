@@ -44,6 +44,7 @@ const HELPMESSAGE: &str = r#"
            -f, --file        Gist commit file name
            -d, --description Gist description
            -p, --public      Gist public or secret
+           -n, --hostname    Gist hostname setting (Default github.com)
 "#;
 
 fn file_copy(file: &PathBuf) -> Result<u64, std::io::Error> {
@@ -83,8 +84,10 @@ fn main() {
                  .long("public")
                  .help("Gist public"))
 
-                .arg(Arg::with_name("host")
+                .arg(Arg::with_name("hostname")
+                 .short("n")
                  .long("hostname")
+                 .takes_value(true)
                  .help("Gist API Host name"))
 
                 .get_matches();
@@ -105,15 +108,22 @@ fn main() {
            }
         };
 
-        let gist_builder = gist::GistBuilder::new(&username, &token);
+        let mut gist_builder = gist::GistBuilder::new(&username, &token);
         let mut request_builder = gist::ApiRequestBuilder::new(username.to_string());
 
         let description = args.value_of("description").unwrap_or("");
-        let public = args.is_present("public");
 
         if description.len() > 0 {
             request_builder.with_description(description);
         }
+
+        let hostname = args.value_of("hostname").unwrap_or("");
+
+        if hostname.len() > 0 {
+            gist_builder.with_host(hostname.to_string());
+        }
+
+        let public = args.is_present("public");
     
         let files = args.values_of("file").unwrap().collect::<Vec<_>>();
         let mut filepaths = vec![];
@@ -126,10 +136,9 @@ fn main() {
             return
         }
 
-        let request_body = request_builder
-                            .with_description(description)
-                            .with_public(public)
-                            .get_body();
+        let request_body = request_builder.with_description(description)
+                                    .with_public(public)
+                                    .get_body();
 
         let gist: gist::Gist = gist_builder.finalize();
         let app_dir: PathBuf = gist.create_work_dir();
